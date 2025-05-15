@@ -63,6 +63,39 @@ public class App {
         if (cmd.equals("exit")) {
             return -1;
         }
+
+        else if(cmd.equals("member join")){
+            String loginId = null;
+            String loginPw = null;
+            String name = null;
+
+            System.out.print("새 아이디 : ");
+            loginId = sc.nextLine().trim();
+            System.out.print("새 비밀번호 : ");
+            loginPw = sc.nextLine().trim();
+            System.out.print("새 이름 : ");
+            name = sc.nextLine().trim();
+
+            // DB insert
+            SecSql sql = new SecSql();
+
+            sql.append("INSERT INTO `member`");
+            sql.append("SET `regDate` = NOW(),");
+            sql.append("`updateDate` = NOW(),");
+            sql.append("`loginId` = ?,", loginId);
+            sql.append("`loginPw` = ?,", loginPw);
+            sql.append("`name` = ?;", name);
+
+            int id = DBUtil.insert(conn, sql);
+
+            // DB insert 까지
+
+            System.out.println(id + "번 회원 생성");
+
+
+
+        }
+
         else if (cmd.startsWith("article delete")){
             int id = 0;
 
