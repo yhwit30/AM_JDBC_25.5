@@ -1,7 +1,9 @@
 package koreaIT.controller;
 
 import koreaIT.Member;
+import koreaIT.container.Container;
 import koreaIT.service.MemberService;
+import koreaIT.session.Session;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -72,6 +74,12 @@ public class MemberController {
     }
 
     public void doLogin() {
+
+        if (Container.session.loginedMember != null){
+            System.out.println("로그아웃하고 로그인하세요.");
+            return;
+        }
+
         String loginId;
         String loginPw;
         System.out.println("== 로그인 ==");
@@ -100,7 +108,7 @@ public class MemberController {
         int tryCount = 0;
 
         while (true) {
-            if (tryCount >= maxTryCount){
+            if (tryCount >= maxTryCount) {
                 System.out.println("제한 시도횟수가 초과되었습니다. 다시 시도하세요.");
                 break;
             }
@@ -119,6 +127,11 @@ public class MemberController {
                 tryCount++;
                 continue;
             }
+
+            // 로그인 상태를 세션에 저장
+            Container.session.loginedMember = member;
+            Container.session.loginedMemberId = member.getId();
+
             System.out.println(member.getName() + "님 환영합니다.");
             break;
         }
