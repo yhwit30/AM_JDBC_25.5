@@ -56,3 +56,32 @@ SET `regDate` = NOW(),
     `name` = '김철수';
 SELECT *
 FROM `member`;
+
+# 게시글 테스트 데이터 대량 생성
+INSERT INTO `article` (regDate, updateDate, title, `body`)
+SELECT NOW(), NOW(), CONCAT('title', SUBSTR(UUID(), 1, 8)),  CONCAT('body', SUBSTR(UUID(), 1, 8))
+FROM `article`;
+
+SELECT *
+FROM `article`;
+
+
+# 게시글 테이블에 작성자의 정보가 담길 memberId 추가
+ALTER TABLE `article` ADD COLUMN `memberId` INT NOT NULL AFTER `updateDate`;
+
+UPDATE `article`
+SET `memberId` = 1
+WHERE `id` = 1;
+
+UPDATE `article`
+SET `memberId` = 2
+WHERE `id` = 2;
+
+SELECT *
+FROM `article` a
+INNER JOIN `member` m
+ON a.memberId = m.id;
+
+SELECT *
+FROM `member`;
+
